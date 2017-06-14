@@ -116,3 +116,9 @@ func (c *Client) DelLock(key string) error {
 func IsValidAsKeyPath(s string) bool {
 	return strings.IndexByte(s, '/') == -1
 }
+
+func (c *Client) RevokeLock(id client.LeaseID) (*client.LeaseRevokeResponse, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), c.reqTimeout)
+	defer cancel()
+	return c.Client.Revoke(ctx, id)
+}

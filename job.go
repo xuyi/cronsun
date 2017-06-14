@@ -98,6 +98,11 @@ func (l *locker) keepAlive() {
 	for {
 		select {
 		case <-l.done:
+			_, err := DefalutClient.RevokeLock(l.lID)
+			if err != nil {
+				log.Warnf("lock revoke err: %s", err.Error())
+				return
+			}
 			return
 		case <-l.timer.C:
 			_, err := DefalutClient.KeepAliveOnce(l.lID)
